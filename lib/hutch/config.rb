@@ -20,7 +20,15 @@ module Hutch
     @string_keys = Set.new
     @number_keys = Set.new
     @boolean_keys = Set.new
+    @symbol_keys = Set.new
     @settings_defaults = {}
+
+    # Define a String user setting
+    # @!visibility private
+    def self.symbol_setting(name, default_value)
+      @symbol_keys << name
+      @settings_defaults[name] = default_value
+    end
 
     # Define a String user setting
     # @!visibility private
@@ -48,6 +56,9 @@ module Hutch
 
     # RabbitMQ Exchange to use for publishing
     string_setting :mq_exchange, 'hutch'
+
+    # RabbitMQ Exchange Type to use for publishing
+    symbol_setting :mq_exchange_type, :topic
 
     # RabbitMQ vhost to use
     string_setting :mq_vhost, '/'
@@ -145,7 +156,7 @@ module Hutch
     string_setting :group, ''
 
     # Set of all setting keys
-    ALL_KEYS = @boolean_keys + @number_keys + @string_keys
+    ALL_KEYS = @boolean_keys + @number_keys + @string_keys + @symbol_keys
 
     def self.initialize(params = {})
       unless @config

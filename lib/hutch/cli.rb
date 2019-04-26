@@ -76,6 +76,7 @@ module Hutch
           logger.info "found rails project (#{path}), booting app in #{ENV['RACK_ENV']} environment"
           require rails_path
           ::Rails.application.eager_load!
+          Hutch::Config.initialize(Hutch::Config.env_based_config)
           return true
         end
       end
